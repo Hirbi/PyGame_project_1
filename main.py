@@ -27,11 +27,22 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 exit(0)
+            if event.type == pygame.KEYDOWN:
+                if event.key == 119:
+                    player.move(0, -5)
+                elif event.key == 97:
+                    player.move(-5, 0)
+                elif event.key == 115:
+                    player.move(0, 5)
+                elif event.key == 100:
+                    player.move(5, 0)
+
+                print(event.key)
         # обновление
         all_sprites.update()
 
         # отрисовка
-        screen.fill(COLORS['BLACK'])
+        screen.fill(COLORS['BLUE'])
         all_sprites.draw(screen)
         pygame.display.flip()
 
