@@ -1,9 +1,11 @@
 import pygame
 import random
 from Player import Player
+import os
 
 # глобальные переменные
-from constants import COLORS, WIDTH, HEIGHT, FPS
+from constants import COLORS, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder
+
 
 # инициализация
 pygame.init()

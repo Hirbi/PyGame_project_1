@@ -1,14 +1,14 @@
 import pygame
-from constants import COLORS, WIDTH, HEIGHT
+import os
+from constants import COLORS, WIDTH, HEIGHT, player_folder
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x=0, y=0, p_w=50, p_h=50):
+    def __init__(self, x=0, y=0, p_img="p1_jump.png"):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((p_w, p_h))
-        self.image.fill(COLORS['GREEN'])
+        self.image = pygame.image.load(os.path.join(player_folder, p_img))
         self.rect = self.image.get_rect()
-        self.rect.center = x + p_w / 2, y + p_h / 2
+        self.rect.center = x + self.rect.width / 2, y + self.rect.height / 2
 
     def move(self, add_x=5, add_y=5):
         if 0 <= self.rect.x + add_x <= WIDTH - self.rect.width + 1:
