@@ -8,7 +8,8 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(player_folder, p_img))
         self.rect = self.image.get_rect()
-        self.rect.center = x + self.rect.width / 2, y + self.rect.height / 2
+        self.cards = []
+        self.rect.center = WIDTH / 2, HEIGHT - self.rect.height / 2
 
     def move(self, add_x=5, add_y=5):
         if 0 <= self.rect.x + add_x <= WIDTH - self.rect.width + 1:
@@ -16,7 +17,11 @@ class Player(pygame.sprite.Sprite):
         if 0 <= self.rect.y + add_y <= HEIGHT - self.rect.height + 1:
             self.rect.y += add_y
 
+    def set_cards(self, *card_list):
+        self.cards.copy(card_list)
+
     def update(self):
-        self.move()
+        # self.move()
+        pass
 
 
