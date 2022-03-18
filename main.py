@@ -1,15 +1,18 @@
 import pygame
+
+pygame.init()
+
 import random
 from Player import Player
 import os
 from card import Card
+from mob_card import MobCard
 from Card_place import CardPlace
 
 # глобальные переменные
 from constants import COLORS, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder, all_sprites
 
 # инициализация
-pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('First try')
@@ -23,13 +26,15 @@ def main():
     running = True
     mouse_down = False
     mouse_x, mouse_y = 0, 0
-    card_count = 4
+    card_count = 8
     cards_places = []
-    for i in range(card_count):
+    for i in range(card_count // 2):
         cards_places.append(CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 500))
+    for i in range(card_count // 2):
+        cards_places.append((CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 275)))
     all_sprites.add(*cards_places)
-    cards_places[0].set_card(Card())
-    cards_places[1].set_card(Card())
+    cards_places[0].set_card(MobCard(10, 7))
+    cards_places[1].set_card(MobCard(9, 12))
 
     card_picked_num = None
     while running:
@@ -54,7 +59,7 @@ def main():
                 mouse_down = False
                 if card_picked_num is not None:
                     for i in range(len(cards_places)):
-                        if cards_places[i].is_in(*event.pos):
+                        if i != card_picked_num and cards_places[i].is_in(*event.pos):
                             print(i)
                             cards_places[i].set_card(cards_places[card_picked_num].card)
                             cards_places[card_picked_num].delete_card()

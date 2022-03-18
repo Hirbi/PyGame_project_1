@@ -37,7 +37,7 @@ class CardPlace(pygame.sprite.Sprite):
     def delete_card(self):
         self.card = None
 
-    # передив карты
+    # передвинуть карты
     def move_card(self, add_x, add_y):
         if self.card is not None:
             self.card.move_card(add_x, add_y)

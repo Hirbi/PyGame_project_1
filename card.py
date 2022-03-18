@@ -9,6 +9,7 @@ class Card(pygame.sprite.Sprite):
 
     def __init__(self, x=0, y=0):
         pygame.sprite.Sprite.__init__(self)
+        # установка изображения
         self.image = pygame.Surface((CARD_SIZE_W, CARD_SIZE_H))
         self.image.fill((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         self.rect = self.image.get_rect()
