@@ -1,32 +1,49 @@
 import pygame.sprite
 from card import Card
-from constants import all_sprites, COLORS, WIDTH, HEIGHT
+from constants import all_sprites, COLORS, CARD_SIZE_W, CARD_SIZE_H
 
 
 class CardPlace(pygame.sprite.Sprite):
-    width = 105 # x
-    height = 155 # y
+    width, height = CARD_SIZE_W + 4, CARD_SIZE_H + 4
 
     def __init__(self, x=0, y=0):
         pygame.sprite.Sprite.__init__(self)
         # устанавливаем поверхность
         self.image = pygame.Surface((CardPlace.width, CardPlace.height))
+        self.image.set_colorkey((0, 0, 0))
         # рисуем прямоугольник
         pygame.draw.rect(self.image, COLORS['GREY'], pygame.Rect((0, 0), (CardPlace.width, CardPlace.height)), 2)
         self.rect = self.image.get_rect()
         self.rect.center = x, y
         self.card = None
 
+    # возвращает карту к месту карты
+    def move_back(self):
+        # print(self.rect.center, '333')
+        if self.card is not None:
+            self.card.set_cords(self.rect.left + 2, self.rect.top + 2)
+
+    # установить карту на новое место
     def set_card(self, card):
+        if self.card is not None:
+            self.card.image = pygame.Surface((0, 0))
+            all_sprites.remove(self.card)
         # устанавливаем карту
-        card.set_surface(self.image)
         self.card = card
         all_sprites.add(card)
+        self.move_back()
+
+    # очистка карты
+    def delete_card(self):
+        self.card = None
+
+    # передив карты
+    def move_card(self, add_x, add_y):
+        if self.card is not None:
+            self.card.move_card(add_x, add_y)
 
     def is_in(self, x, y):
-        if self.card is not None:
-            return self.card.is_in(x, y)
-        return False
+        return self.rect.left <= x <= self.rect.right and self.rect.top <= y <= self.rect.bottom
 
     def set_card_cords(self, add_x, add_y):
         if self.card is not None:
