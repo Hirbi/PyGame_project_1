@@ -6,7 +6,8 @@ from constants import all_sprites, COLORS, CARD_SIZE_W, CARD_SIZE_H
 class CardPlace(pygame.sprite.Sprite):
     width, height = CARD_SIZE_W + 4, CARD_SIZE_H + 4
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0, y=0, can_put=False, can_take=False):
+        self.can_put, self.can_take = can_put, can_take
         pygame.sprite.Sprite.__init__(self)
         # устанавливаем поверхность
         self.image = pygame.Surface((CardPlace.width, CardPlace.height))
@@ -39,11 +40,17 @@ class CardPlace(pygame.sprite.Sprite):
 
     # передвинуть карты
     def move_card(self, add_x, add_y):
-        if self.card is not None:
+        if self.card is not None and self.can_take:
             self.card.move_card(add_x, add_y)
 
     def is_in(self, x, y):
         return self.rect.left <= x <= self.rect.right and self.rect.top <= y <= self.rect.bottom
+
+    def can_take_card(self, x, y):
+        return self.is_in(x, y) and self.card is not None and self.can_take
+
+    def can_put_card(self, x, y):
+        return self.can_put and self.is_in(x, y)
 
     def set_card_cords(self, add_x, add_y):
         if self.card is not None:
