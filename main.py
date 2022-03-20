@@ -36,13 +36,14 @@ def main():
     # снизу
     for i in range(card_count // 2):
         cards_places.append(
-            CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 500, can_take=True))
+            CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 500, can_take=True, can_put=True))
     # сверху
     for i in range(card_count // 2):
-        cards_places.append((CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 275, can_put=True)))
+        cards_places.append((CardPlace(WIDTH / 2 - CardPlace.width * 2 + CardPlace.width * (i + 1.5), 275, can_take= True, can_put=True)))
     all_sprites.add(*cards_places)
     cards_places[0].can_put = True
-    cards_places[0].set_card(Card(3, 3))
+    cards_places[0].set_card(MobCard(100, 7, 4, 1))
+    cards_places[1].set_card(MobCard(7, 4, 9, 3, mob_img='huy.png'))
 #     cards_places[0].set_card(MobCard(10, 7))
   #  cards_places[1].set_card(MobCard(9, 12))
 
@@ -76,8 +77,7 @@ def main():
                             cards_places[card_picked_num].delete_card()
                             print(i)
                             all_sprites.update()
-                else:
-                    pass
+                    all_sprites.update()
                 card_picked_num = None
                 for card_place in cards_places:
                     card_place.move_back()

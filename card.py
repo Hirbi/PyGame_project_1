@@ -11,10 +11,14 @@ class Card(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         # установка изображения
         # self.image = pygame.Surface((CARD_SIZE_W, CARD_SIZE_H))
-        ramka_img = os.path.join(img_folder, 'cards', 'ramkatext.png')
-        self.image = pygame.image.load(ramka_img)
-        self.image = pygame.transform.scale(self.image, (CARD_SIZE_W, CARD_SIZE_H))
+        self.image = pygame.Surface((CARD_SIZE_W, CARD_SIZE_H))
+        self.image.fill(COLORS['WHITE'])
+        self.text_ramka_img = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'cards', 'ramkatext.png')),
+                                               (CARD_SIZE_W, CARD_SIZE_H))
+        # self.image = pygame.transform.scale(self.image, (CARD_SIZE_W, CARD_SIZE_H))
         # self.image.fill((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        pygame.draw.rect(self.image, COLORS["BLACK"], pygame.Rect(0, 0, CARD_SIZE_W, CARD_SIZE_H), 4)
+        self.image.blit(self.text_ramka_img, (0, 0))
         self.rect = self.image.get_rect()
         self.rect.center = x, y
 
@@ -34,3 +38,6 @@ class Card(pygame.sprite.Sprite):
 
     def set_surface(self, surface):
         surface.blit(self.image, (2, 2))
+
+
+
