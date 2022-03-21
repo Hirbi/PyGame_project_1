@@ -18,5 +18,8 @@ game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'data', 'img')
 player_folder = os.path.join(img_folder, 'player')
 
+# для игры
+table_count = 4
+hand_count = 4
 # шрифт
 # print(pygame.font.get_fonts())

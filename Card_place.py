@@ -63,6 +63,11 @@ class CardPlace(pygame.sprite.Sprite):
     def set_cords(self, x, y):
         self.rect.center = x, y
 
+    def delete_it(self):
+        self.delete_card()
+        self.image = pygame.Surface((0, 0))
+        all_sprites.remove(self)
+
     def update(self) -> None:
         if self.card is not None and self.card.get_hp() <= 0:
             self.card.image = pygame.Surface((0, 0))
