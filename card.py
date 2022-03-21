@@ -7,12 +7,12 @@ from constants import COLORS, CARD_SIZE_W, CARD_SIZE_H, img_folder
 class Card(pygame.sprite.Sprite):
     card_picked = False
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0, y=0, all_tables=False):
         pygame.sprite.Sprite.__init__(self)
         # установка изображения
         # self.image = pygame.Surface((CARD_SIZE_W, CARD_SIZE_H))
-        self.image = pygame.Surface((CARD_SIZE_W, CARD_SIZE_H))
-        self.image.fill(COLORS['WHITE'])
+        self.all_tables = all_tables
+        self.image = pygame.image.load(os.path.join(img_folder, 'cards', 'fon.png'))
         self.text_ramka_img = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'cards', 'ramkatext.png')),
                                                (CARD_SIZE_W, CARD_SIZE_H))
         # self.image = pygame.transform.scale(self.image, (CARD_SIZE_W, CARD_SIZE_H))
@@ -39,5 +39,7 @@ class Card(pygame.sprite.Sprite):
     def set_surface(self, surface):
         surface.blit(self.image, (2, 2))
 
+    def get_hp(self):
+        return 1
 
 

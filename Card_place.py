@@ -20,7 +20,6 @@ class CardPlace(pygame.sprite.Sprite):
 
     # возвращает карту к месту карты
     def move_back(self):
-        # print(self.rect.center, '333')
         if self.card is not None:
             self.card.set_cords(self.rect.left + 2, self.rect.top + 2)
 
@@ -56,4 +55,15 @@ class CardPlace(pygame.sprite.Sprite):
         if self.card is not None:
             self.card.set_cords(add_x, add_y)
 
+    def card_for_all(self):
+        if self.card is not None:
+            return self.card.all_tables
+        return False
 
+    def set_cords(self, x, y):
+        self.rect.center = x, y
+
+    def update(self) -> None:
+        if self.card is not None and self.card.get_hp() <= 0:
+            self.card.image = pygame.Surface((0, 0))
+            all_sprites.remove(self.card)
