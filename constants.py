@@ -4,6 +4,10 @@ import pygame
 WIDTH = 1920
 HEIGHT = 1050
 FPS = 240
+pygame.mixer.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+font = pygame.font.Font(None, 30)
+
 CARD_SIZE_W, CARD_SIZE_H = 150, 225
 COLORS = {'BLACK': (0, 0, 0), "WHITE": (255, 255, 255), 'RED': (255, 0, 0), 'BLUE': (0, 0, 255), 'GREEN': (0, 255, 0),
           "GREY": (155, 155, 155), "YELLOW": (255, 255, 0)}

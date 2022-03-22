@@ -2,9 +2,7 @@ import pygame
 from card import Card
 import os
 import random
-from constants import COLORS, CARD_SIZE_W, CARD_SIZE_H, CARD_TYPES, img_folder, all_sprites
-
-font = pygame.font.Font(None, 30)
+from constants import COLORS, CARD_SIZE_W, CARD_SIZE_H, CARD_TYPES, img_folder, all_sprites, font
 
 
 class MobCard(Card):

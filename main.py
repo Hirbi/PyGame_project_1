@@ -10,15 +10,13 @@ from mob_card import MobCard
 from Card_place import CardPlace
 
 # глобальные переменные
-from constants import COLORS, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder,\
+from constants import screen, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder,\
     all_sprites, table_count, hand_count
 
 # инициализация
-pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption('First try')
 clock = pygame.time.Clock()
-background = pygame.image.load(os.path.join(img_folder, 'fon.jpg')).convert()
+background = pygame.image.load(os.path.join(img_folder, 'fon.jpg'))
 screen.blit(background, (0, 0))
 pygame.display.update()
 
@@ -34,7 +32,6 @@ def game(now_player, other_player):
     mouse_x, mouse_y = 0, 0
     card_picked_num = None
     while running:
-        # screen.blit(background, (0, 0))
         clock.tick(FPS)
         # в pygame.event.get() находятся все события pygame
         for event in pygame.event.get():
@@ -46,26 +43,15 @@ def game(now_player, other_player):
                     return
                 mouse_x, mouse_y = event.pos
                 mouse_down = True
-                for i in range(len(now_player.hand)):
-                    if now_player.hand[i].can_take_card(*event.pos):
-                        card_picked_num = i
+                card_picked_num = now_player.can_take_card(event.pos)
             if event.type == pygame.MOUSEMOTION:
                 mouse_down = False
                 if card_picked_num is not None:
                     now_player.hand[card_picked_num].move_card(event.pos[0] - mouse_x, event.pos[1] - mouse_y)
                     mouse_x, mouse_y = event.pos
             if event.type == pygame.MOUSEBUTTONUP:
-                if card_picked_num is not None:
-                    table = now_player.table.copy()
-                    if now_player.hand[card_picked_num].card_for_all():
-                        table += other_player.table
-                    for i in range(len(table)):
-                        if table[i].can_put_card(*event.pos):
-                            table[i].set_card(now_player.hand[card_picked_num].card)
-                            now_player.hand[card_picked_num].delete_it()
-                            now_player.hand.remove(now_player.hand[card_picked_num])
-                            all_sprites.update()
-                    all_sprites.update()
+                now_player.replace_card(card_picked_num, other_player, event.pos)
+                all_sprites.update()
                 card_picked_num = None
                 for card_place in now_player.hand:
                     card_place.move_back()
