@@ -6,7 +6,7 @@ from constants import all_sprites, COLORS, CARD_SIZE_W, CARD_SIZE_H
 class CardPlace(pygame.sprite.Sprite):
     width, height = CARD_SIZE_W + 4, CARD_SIZE_H + 4
 
-    def __init__(self, x=0, y=0, can_put=False, can_take=False):
+    def __init__(self, x=0, y=0, card=None, can_put=False, can_take=False):
         self.can_put, self.can_take = can_put, can_take
         pygame.sprite.Sprite.__init__(self)
         # устанавливаем поверхность
@@ -16,7 +16,10 @@ class CardPlace(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, COLORS['GREY'], pygame.Rect((0, 0), (CardPlace.width, CardPlace.height)), 2)
         self.rect = self.image.get_rect()
         self.rect.center = x, y
-        self.card = None
+        self.card = card
+        if self.card is not None:
+            all_sprites.add(card)
+            self.move_back()
 
     # возвращает карту к месту карты
     def move_back(self):

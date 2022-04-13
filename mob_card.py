@@ -8,7 +8,7 @@ from constants import COLORS, CARD_SIZE_W, CARD_SIZE_H, CARD_TYPES, img_folder, 
 class MobCard(Card):
 
     # хп, дамаг, стоимость, тип(0 - для всех), координаты х и у
-    def __init__(self, hp=0, dp=0, cost=0, kind=0, x=0, y=0, mob_img="monke.png", all_tables=False):
+    def __init__(self, hp=0, dp=0, cost=0, kind=0, mob_img="monke.png", all_tables=False, x=0, y=0):
         super().__init__(x, y, all_tables)
         self.hp, self.dp, self.cost, self.kind = hp, dp, cost, kind
         # установка рамок
@@ -17,9 +17,7 @@ class MobCard(Card):
         self.ramka_down = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'cards', 'ramkadown.png')),
                                                  (CARD_SIZE_W, CARD_SIZE_H))
         self.mob_img = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'cards', mob_img)),
-                                                 (CARD_SIZE_W, CARD_SIZE_H))
-        #self.mob_img = pygame.Surface((142, 130))
-        #self.mob_img.fill(COLORS["YELLOW"])
+                                              (CARD_SIZE_W - 20, CARD_SIZE_W - 20))
         self.image.blit(self.mob_img, (4, 2))
         self.image.blit(self.ramka_up, (0, 0))
         self.image.blit(self.ramka_down, (0, 0))
@@ -40,6 +38,7 @@ class MobCard(Card):
         self.cost_rect.center = CARD_SIZE_W - move_x, move_y + 2
         self.image.blit(self.text_cost, self.cost_rect)
         # Установка типа
+        # 1 - floppa, 2 = robert
         self.text_kind = font.render(str(self.kind), True, CARD_TYPES[self.kind])
         self.kind_rect = self.text_kind.get_rect()
         self.kind_rect.center = move_x, move_y + 2

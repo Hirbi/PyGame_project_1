@@ -10,20 +10,22 @@ from mob_card import MobCard
 from Card_place import CardPlace
 
 # глобальные переменные
-from constants import screen, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder,\
+from constants import screen, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder, \
     all_sprites, table_count, hand_count
 
 # инициализация
-pygame.display.set_caption('First try')
+pygame.display.set_caption('Card game')
 clock = pygame.time.Clock()
-background = pygame.image.load(os.path.join(img_folder, 'fon.jpg'))
+background = pygame.transform.scale(pygame.image.load(os.path.join(img_folder, 'background.jpg')), (WIDTH, HEIGHT))
+# background = pygame.image.load(os.path.join(img_folder, 'try.jpg'))
 screen.blit(background, (0, 0))
 pygame.display.update()
+pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 
 def game(now_player, other_player):
-    now_player.your_turn()
-    other_player.enemy_turn()
+    now_player.turn(True)
+    other_player.turn(False)
     all_sprites.update()
 
     screen.blit(background, (0, 0))
@@ -51,23 +53,17 @@ def game(now_player, other_player):
                     mouse_x, mouse_y = event.pos
             if event.type == pygame.MOUSEBUTTONUP:
                 now_player.replace_card(card_picked_num, other_player, event.pos)
-                all_sprites.update()
+                now_player.move_cards_back()
                 card_picked_num = None
-                for card_place in now_player.hand:
-                    card_place.move_back()
-        # обновление
-        pygame.display.flip()
-        all_sprites.update()
         # отрисовка
-        # screen.fill(COLORS['BLACK'])
         screen.blit(background, (0, 0))
         all_sprites.draw(screen)
         pygame.display.flip()
 
 
 def main():
-    player_1 = Player(p_img='floppa.png')
-    player_2 = Player(p_img='robert.png')
+    player_1 = Player(1, p_img='floppa.png')
+    player_2 = Player(2, p_img='robert.png')
     all_sprites.add(player_1, player_2)
     player_1.start_game()
     player_2.start_game()
@@ -75,7 +71,9 @@ def main():
     all_sprites.add(*player_2.table, *player_2.hand)
     while True:
         game(player_1, player_2)
+        player_1.new_turn()
         game(player_2, player_1)
+        player_2.new_turn()
 
 
 if __name__ == '__main__':
