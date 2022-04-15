@@ -13,7 +13,7 @@ font = pygame.font.Font(None, 30)
 player_font = pygame.font.Font(None, 60)
 
 COLORS = {'BLACK': (0, 0, 0), "WHITE": (255, 255, 255), 'RED': (255, 0, 0), 'BLUE': (0, 0, 255), 'GREEN': (0, 255, 0),
-          "GREY": (155, 155, 155), "YELLOW": (255, 255, 0)}
+          "GREY": (155, 155, 155), "YELLOW": (255, 255, 0), "BROWN": (101, 67, 33)}
 
 CARD_TYPES = {0: COLORS["BLACK"], 1: COLORS['BLUE'], 2: COLORS['RED'], 3: COLORS['GREEN'], 4: COLORS['YELLOW']}
 new_ = [(randint(1, 10), randint(1, 10), randint(1, 10), randint(1, 4)) for _ in range(30)]

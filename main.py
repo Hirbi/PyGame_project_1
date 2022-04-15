@@ -8,6 +8,7 @@ import os
 from card import Card
 from mob_card import MobCard
 from Card_place import CardPlace
+from mana import Mana
 
 # глобальные переменные
 from constants import screen, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder, \
@@ -24,6 +25,8 @@ pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 
 def game(now_player, other_player):
+    crystal = Mana(1655, 670)
+    all_sprites.add(crystal)
     now_player.turn(True)
     other_player.turn(False)
     all_sprites.update()
@@ -40,9 +43,13 @@ def game(now_player, other_player):
             if event.type == pygame.QUIT:
                 running = False
                 exit(0)
+            if event.type == pygame.KEYDOWN:
+                # print(event.key)
+                if event.key == 13: # Enter
+                    now_player.end_turn(other_player)
+                    return 0
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 3:
-                    return
+                # print(event.button)
                 mouse_x, mouse_y = event.pos
                 mouse_down = True
                 card_picked_num = now_player.can_take_card(event.pos)
@@ -52,9 +59,12 @@ def game(now_player, other_player):
                     now_player.hand[card_picked_num].move_card(event.pos[0] - mouse_x, event.pos[1] - mouse_y)
                     mouse_x, mouse_y = event.pos
             if event.type == pygame.MOUSEBUTTONUP:
-                now_player.replace_card(card_picked_num, other_player, event.pos)
-                now_player.move_cards_back()
-                card_picked_num = None
+                if card_picked_num is not None:
+                    now_player.play_card(card_picked_num, other_player, event.pos)
+                    now_player.move_cards_back()
+                    card_picked_num = None
+                else:
+                    now_player.activate_card(event.pos, event.button)
         # отрисовка
         screen.blit(background, (0, 0))
         all_sprites.draw(screen)
