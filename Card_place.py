@@ -21,6 +21,10 @@ class CardPlace(pygame.sprite.Sprite):
             all_sprites.add(card)
             self.move_back()
 
+    def get_cost(self):
+        if self.card is not None:
+            return self.card.get_cost()
+
     # возвращает карту к месту карты
     def move_back(self):
         if self.card is not None:

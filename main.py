@@ -25,8 +25,8 @@ pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 
 def game(now_player, other_player):
-    crystal = Mana(1655, 670)
-    all_sprites.add(crystal)
+    # crystal = Mana(1655, 670)
+    # all_sprites.add(crystal)
     now_player.turn(True)
     other_player.turn(False)
     all_sprites.update()
@@ -80,10 +80,10 @@ def main():
     all_sprites.add(*player_1.table, *player_1.hand)
     all_sprites.add(*player_2.table, *player_2.hand)
     while True:
-        game(player_1, player_2)
         player_1.new_turn()
-        game(player_2, player_1)
+        game(player_1, player_2)
         player_2.new_turn()
+        game(player_2, player_1)
 
 
 if __name__ == '__main__':

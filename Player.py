@@ -17,7 +17,8 @@ class Player(pygame.sprite.Sprite):
         self.deck = [MobCard(*stats) for stats in all_decks[p_class]]
         random.shuffle(self.deck)
         self.table = []
-        self.mana = []
+        self.mana = 0
+        self.max_mana = 0
         self.hp = 30
 
         self.empty_deck_damage = 0
@@ -26,6 +27,11 @@ class Player(pygame.sprite.Sprite):
                                             (P_WIDTH // 3, P_HEIGHT // 3))
         self.heart_rect = self.heart.get_rect()
         self.heart_rect.right, self.heart_rect.bottom = P_WIDTH, P_HEIGHT
+        # иконка маны для персонажа
+        self.mana_img = pygame.transform.scale(pygame.image.load(os.path.join(player_folder, 'mana.png')),
+                                            (P_WIDTH // 3, P_HEIGHT // 3))
+        self.mana_rect = self.mana_img.get_rect()
+        self.mana_rect.left, self.mana_rect.bottom = 0, P_HEIGHT
 
     # перемещение карт руки у игроков
     def move_hand(self, my_turn):
@@ -70,7 +76,8 @@ class Player(pygame.sprite.Sprite):
 
     # начало нового хода
     def new_turn(self):
-        self.mana.append(Mana())
+        self.max_mana = min(self.max_mana + 1, 10)
+        self.mana = self.max_mana
         if len(self.hand) <= 5 and len(self.deck) != 0:
             self.hand.append(CardPlace(card=self.deck.pop(), can_take=True, can_put=False))
         elif len(self.deck) != 0:
@@ -92,9 +99,11 @@ class Player(pygame.sprite.Sprite):
             if self.hand[card_picked_num].card_for_all():
                 table += other_player.table
             for i in range(len(table)):
-                if table[i].can_put_card(*pos):
+                if table[i].can_put_card(*pos) and self.mana - self.hand[card_picked_num].get_cost() >= 0:
+                    self.mana -= self.hand[card_picked_num].get_cost()
                     table[i].set_card(self.hand[card_picked_num].card)
                     self.delete_card(card_picked_num)
+        self.update()
 
     # активация карт
     def activate_card(self, pos, button):
@@ -131,7 +140,12 @@ class Player(pygame.sprite.Sprite):
             card_place.move_back()
 
     def update(self):
+        self.image.blit(self.mana_img, self.mana_rect)
         self.image.blit(self.heart, self.heart_rect)
+        self.text_mana = player_font.render(str(self.mana), True, COLORS["BLUE"])
+        self.text_mana_rect = self.text_mana.get_rect()
+        self.text_mana_rect.center = self.mana_rect.center
+        self.image.blit(self.text_mana, self.text_mana_rect)
         self.text_hp = player_font.render(str(self.hp), True, COLORS["WHITE"] if self.hp == 30 else COLORS["RED"])
         self.hp_rect = self.text_hp.get_rect()
         self.hp_rect.center = self.heart_rect.center

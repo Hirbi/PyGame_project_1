@@ -76,6 +76,9 @@ class MobCard(Card):
         self.kind_rect.center = self.move_x, self.move_y + 2
         self.image.blit(self.text_kind, self.kind_rect)
 
+    def get_cost(self):
+        return self.cost
+
     def get_dp(self):
         return self.dp
 
