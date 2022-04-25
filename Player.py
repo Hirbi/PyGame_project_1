@@ -125,6 +125,7 @@ class Player(pygame.sprite.Sprite):
             elif self.table[i].can_attack():
                 other_player.table[i].get_hit(self.table[i].attack())
                 self.table[i].get_hit(other_player.table[i].attack())
+            self.table[i].set_action(0)
         all_sprites.update()
 
     # вывод номера карты, которую можно взять

@@ -9,10 +9,10 @@ from card import Card
 from mob_card import MobCard
 from Card_place import CardPlace
 from mana import Mana
+from Button import Button
 
 # глобальные переменные
-from constants import screen, WIDTH, HEIGHT, FPS, game_folder, img_folder, player_folder, \
-    all_sprites, table_count, hand_count
+from constants import *
 
 # инициализация
 pygame.display.set_caption('Card game')
@@ -25,8 +25,14 @@ pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 
 def game(now_player, other_player):
-    # crystal = Mana(1655, 670)
-    # all_sprites.add(crystal)
+    if now_player.hp <= 0 or other_player.hp <= 0:
+        print("smbd died")
+        exit(0)
+    buttons = {"end_turn": Button(x=1550, y=536, w=120, h=60,img="end_turn_btn.png", text="End turn", text_color=COLORS['BLACK']),
+               "exit": Button(x=WIDTH - 25, y=25, w=50, h=50, img="close_btn.png", text=""),
+               "settings": Button(x=WIDTH - 75, y=25, w=50, h=50, img="settings_btn.png", text="")}
+
+    all_sprites.add(*buttons.values())
     now_player.turn(True)
     other_player.turn(False)
     all_sprites.update()
@@ -44,13 +50,18 @@ def game(now_player, other_player):
                 running = False
                 exit(0)
             if event.type == pygame.KEYDOWN:
+                pass
                 # print(event.key)
-                if event.key == 13: # Enter
-                    now_player.end_turn(other_player)
-                    return 0
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # print(event.button)
                 mouse_x, mouse_y = event.pos
+                if buttons['end_turn'].is_in(mouse_x, mouse_y):
+                    now_player.end_turn(other_player)
+                    return 0
+                elif buttons['exit'].is_in(mouse_x, mouse_y):
+                    exit(0)
+                elif buttons['settings'].is_in(mouse_x, mouse_y):
+                    pass
                 mouse_down = True
                 card_picked_num = now_player.can_take_card(event.pos)
             if event.type == pygame.MOUSEMOTION:

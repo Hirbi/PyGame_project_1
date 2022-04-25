@@ -93,7 +93,7 @@ class CardPlace(pygame.sprite.Sprite):
         return self.action
 
     def set_action(self, button):
-        self.action = button if self.action == 0 else 0
+        self.action = button if self.action != button else 0
         # print(button)
 
     def get_hit(self, damage):
